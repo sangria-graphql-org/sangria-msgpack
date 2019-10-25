@@ -21,7 +21,7 @@ scalacOptions ++= {
 libraryDependencies ++= Seq(
   "org.sangria-graphql" %% "sangria-marshalling-api" % "1.0.0",
 
-  "org.msgpack" % "msgpack-core" % "0.8.11",
+  "org.msgpack" % "msgpack-core" % "0.8.18",
 
   "org.sangria-graphql" %% "sangria-marshalling-testkit" % "1.0.0" % "test",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test"
