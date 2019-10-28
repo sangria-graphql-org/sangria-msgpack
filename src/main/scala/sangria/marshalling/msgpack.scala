@@ -21,26 +21,26 @@ object msgpack {
     def mapNode(builder: MapBuilder) = builder.build
 
     def mapNode(keyValues: Seq[(String, Value)]) = keyValues.foldLeft(ValueFactory.newMapBuilder()) {
-      case (acc, (key, value)) ⇒ acc.put(ValueFactory.newString(key), value)
+      case (acc, (key, value)) => acc.put(ValueFactory.newString(key), value)
     }.build()
 
     def arrayNode(values: Vector[Value]) = ValueFactory.newArray(values.toArray, true)
     def optionalArrayNodeValue(value: Option[Value]) = value match {
-      case Some(v) ⇒ v
-      case None ⇒ nullNode
+      case Some(v) => v
+      case None => nullNode
     }
 
     def scalarNode(value: Any, typeName: String, info: Set[ScalarValueInfo]) = value match {
-      case v: String ⇒ ValueFactory.newString(v)
-      case v: Boolean ⇒ ValueFactory.newBoolean(v)
-      case v: Int ⇒ ValueFactory.newInteger(v)
-      case v: Long ⇒ ValueFactory.newInteger(v)
-      case v: Float ⇒ ValueFactory.newFloat(v)
-      case v: Double ⇒ ValueFactory.newFloat(v)
-      case v: BigInt ⇒ ValueFactory.newInteger(v.bigInteger)
-      case v: BigDecimal ⇒ bigDecimalMarshaller.marshalBigDecimal(v)
-      case v: Array[Byte] ⇒ ValueFactory.newBinary(v)
-      case v ⇒ throw new IllegalArgumentException("Unsupported scalar value: " + v)
+      case v: String => ValueFactory.newString(v)
+      case v: Boolean => ValueFactory.newBoolean(v)
+      case v: Int => ValueFactory.newInteger(v)
+      case v: Long => ValueFactory.newInteger(v)
+      case v: Float => ValueFactory.newFloat(v)
+      case v: Double => ValueFactory.newFloat(v)
+      case v: BigInt => ValueFactory.newInteger(v.bigInteger)
+      case v: BigDecimal => bigDecimalMarshaller.marshalBigDecimal(v)
+      case v: Array[Byte] => ValueFactory.newBinary(v)
+      case v => throw new IllegalArgumentException("Unsupported scalar value: " + v)
     }
 
     def enumNode(value: String, typeName: String) = ValueFactory.newString(value)
@@ -72,8 +72,8 @@ object msgpack {
 
     // preserve order
     def getMapKeys(node: Value) = node.asInstanceOf[MapValue].getKeyValueArray.zipWithIndex.filter(_._2 % 2 == 0).map {
-      case (s: StringValue, _) ⇒ s.asString
-      case (invalid, _) ⇒ throw new IllegalArgumentException(s"Invalid map key type. Only Strings are supported. Key value: $invalid")
+      case (s: StringValue, _) => s.asString
+      case (invalid, _) => throw new IllegalArgumentException(s"Invalid map key type. Only Strings are supported. Key value: $invalid")
     }
 
     def isListNode(node: Value) = node.isInstanceOf[ArrayValue]
@@ -81,15 +81,15 @@ object msgpack {
 
     def isDefined(node: Value) = !node.isInstanceOf[NilValue]
     def getScalarValue(node: Value) = node match {
-      case value if bigDecimalMarshaller.isBigDecimal(value) ⇒
+      case value if bigDecimalMarshaller.isBigDecimal(value) =>
         bigDecimalMarshaller.unmarshalBigDecimal(value)
-      case s: StringValue ⇒ s.asString
-      case b: BooleanValue ⇒ b.getBoolean
-      case i: IntegerValue if i.isInIntRange ⇒ i.asInt
-      case i: IntegerValue if i.isInLongRange ⇒ i.asLong
-      case i: IntegerValue ⇒ BigInt(i.asBigInteger)
-      case f: FloatValue ⇒ f.toDouble
-      case v ⇒
+      case s: StringValue => s.asString
+      case b: BooleanValue => b.getBoolean
+      case i: IntegerValue if i.isInIntRange => i.asInt
+      case i: IntegerValue if i.isInLongRange => i.asLong
+      case i: IntegerValue => BigInt(i.asBigInteger)
+      case f: FloatValue => f.toDouble
+      case v =>
         throw new IllegalStateException(s"'$v' is not a supported scalar value")
     }
 
@@ -98,9 +98,9 @@ object msgpack {
 
     def isEnumNode(node: Value) = node.isInstanceOf[StringValue]
     def isScalarNode(node: Value) = node match {
-      case value if bigDecimalMarshaller.isBigDecimal(value) ⇒ true
-      case _: StringValue | _: BooleanValue | _: IntegerValue | _ : FloatValue ⇒ true
-      case _ ⇒ false
+      case value if bigDecimalMarshaller.isBigDecimal(value) => true
+      case _: StringValue | _: BooleanValue | _: IntegerValue | _ : FloatValue => true
+      case _ => false
     }
 
     def isVariableNode(node: Value) = false
@@ -156,8 +156,8 @@ object msgpack {
       }
 
       def isBigDecimal(value: Value) = value match {
-        case ext: ExtensionValue if ext.getType == ExtensionType ⇒ true
-        case _ ⇒ false
+        case ext: ExtensionValue if ext.getType == ExtensionType => true
+        case _ => false
       }
 
       def unmarshalBigDecimal(value: Value) = {
@@ -177,7 +177,7 @@ object msgpack {
   object standardTypeBigDecimal {
     implicit object DefaultMsgpackBigDecimalMarshaller extends MsgpackBigDecimalMarshaller {
       def marshalBigDecimal(value: BigDecimal) =
-        value.toBigIntExact map (i ⇒ ValueFactory.newInteger(i.bigInteger))getOrElse {
+        value.toBigIntExact map (i => ValueFactory.newInteger(i.bigInteger))getOrElse {
           if (value.isExactDouble)
             ValueFactory.newFloat(value.doubleValue)
           else
@@ -218,7 +218,7 @@ object msgpack {
   }
 
   private[msgpack] final class MsgpackMapBuilder(keys: Seq[String]) {
-    import scala.collection.mutable.{Set ⇒ MutableSet}
+    import scala.collection.mutable.{Set => MutableSet}
 
     private val elements = new Array[Value](keys.size * 2)
     private val indexesSet = MutableSet[Int]()
@@ -226,8 +226,8 @@ object msgpack {
       val builder = Map.newBuilder[String, Int]
       var idx = 0
 
-      keys.foreach { key ⇒
-        builder += key → idx
+      keys.foreach { key =>
+        builder += key -> idx
         idx += 2
       }
 
@@ -248,7 +248,7 @@ object msgpack {
       val buffer = new Array[Value](indexesSet.size * 2)
       var bufferIdx = 0
 
-      for (i ← 0 to (keys.size * 2) by 2 if indexesSet contains i) {
+      for (i <- 0 to (keys.size * 2) by 2 if indexesSet contains i) {
         buffer(bufferIdx) = elements(i)
         buffer(bufferIdx + 1) = elements(i + 1)
         bufferIdx = bufferIdx + 2
