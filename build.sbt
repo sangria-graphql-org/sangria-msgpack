@@ -30,7 +30,8 @@ libraryDependencies ++= Seq(
 git.remoteRepo := "git@github.com:sangria-graphql/sangria-msgpack.git"
 
 // Publishing
-
+releaseCrossBuild := true
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
 publishMavenStyle := true
 publishArtifact in Test := false
 pomIncludeRepository := (_ => false)
