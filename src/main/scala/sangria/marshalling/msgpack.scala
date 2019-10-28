@@ -77,7 +77,7 @@ object msgpack {
     }
 
     def isListNode(node: Value) = node.isInstanceOf[ArrayValue]
-    def getListValue(node: Value) = node.asInstanceOf[ArrayValue].list().asScala
+    def getListValue(node: Value) = node.asInstanceOf[ArrayValue].list().asScala.toSeq
 
     def isDefined(node: Value) = !node.isInstanceOf[NilValue]
     def getScalarValue(node: Value) = node match {
@@ -179,7 +179,7 @@ object msgpack {
       def marshalBigDecimal(value: BigDecimal) =
         value.toBigIntExact map (i ⇒ ValueFactory.newInteger(i.bigInteger))getOrElse {
           if (value.isExactDouble)
-            ValueFactory.newFloat(value.doubleValue())
+            ValueFactory.newFloat(value.doubleValue)
           else
             throw new IllegalArgumentException(
               s"MessagePack cannot serialize a BigDecimal ($value) that can't be represented as double or a BigInt. " +
