@@ -42,9 +42,8 @@ publishTo := Some(
 
 // Site and docs
 
-site.settings
-site.includeScaladoc()
-ghpages.settings
+enablePlugins(GhpagesPlugin)
+enablePlugins(SiteScaladocPlugin)
 
 // nice *magenta* prompt!
 
