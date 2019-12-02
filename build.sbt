@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
   "org.msgpack" % "msgpack-core" % "0.8.18",
 
   "org.sangria-graphql" %% "sangria-marshalling-testkit" % "1.0.2" % Test,
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test
+  "org.scalatest" %% "scalatest" % "3.1.0" % Test
 )
 
 git.remoteRepo := "git@github.com:sangria-graphql/sangria-msgpack.git"
