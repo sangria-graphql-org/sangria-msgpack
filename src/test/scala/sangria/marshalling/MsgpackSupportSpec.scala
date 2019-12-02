@@ -1,11 +1,12 @@
 package sangria.marshalling
 
 import org.msgpack.value.ValueFactory
-import org.scalatest.{Matchers, WordSpec}
 
 import sangria.marshalling.testkit._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class MsgpackSupportSpec extends WordSpec with Matchers with MarshallingBehaviour with InputHandlingBehaviour with ParsingBehaviour {
+class MsgpackSupportSpec extends AnyWordSpec with Matchers with MarshallingBehaviour with InputHandlingBehaviour with ParsingBehaviour {
   import sangria.marshalling.msgpack._
 
   "Msgpack integration" should {
